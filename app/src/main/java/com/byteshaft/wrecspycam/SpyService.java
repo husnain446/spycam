@@ -9,8 +9,8 @@ import android.os.IBinder;
 @SuppressWarnings("deprecation")
 public class SpyService extends Service {
 
-    private Camera mCamera = null;
-    private CameraSurface mCameraSurface = null;
+    private Camera mCamera;
+    private CameraSurface mCameraSurface;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

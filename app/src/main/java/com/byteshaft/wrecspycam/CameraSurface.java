@@ -41,10 +41,10 @@ import java.util.Locale;
 public class CameraSurface extends ContextWrapper implements SurfaceHolder.Callback,
         Camera.PictureCallback, Camera.ShutterCallback {
 
-    private WindowManager mWindowManager = null;
-    private SurfaceView mDummyPreview = null;
-    private Camera mCamera = null;
-    private Camera.Parameters mParams = null;
+    private WindowManager mWindowManager;
+    private SurfaceView mDummyPreview;
+    private Camera mCamera;
+    private Camera.Parameters mParams;
 
     public CameraSurface(Context context, Camera camera) {
         super(context);

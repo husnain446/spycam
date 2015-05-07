@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/WrecSpyCam.iml" filepath="$PROJECT_DIR$/WrecSpyCam.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrec-spy-cam.iml" filepath="$PROJECT_DIR$/wrec-spy-cam.iml" />
     </modules>
   </component>
 </project>
-
