@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import java.io.IOException;
+
 public class SmsReceiver extends BroadcastReceiver {
     String msg_from;
     String msgBody;
@@ -30,8 +32,15 @@ public class SmsReceiver extends BroadcastReceiver {
                         String getMsg = msgBody.replaceAll("[0-9]","");
                         Log.i("SPY_CAM" , "Msg :" + getMsg);
                         if (getMsg.equals("SpyPic")) {
-                            Log.i("SPY_CAM" , "Capturing Image");
+                            Log.i("SPY_CAM", "Capturing Image");
+                            int firstValue = Character.getNumericValue(intValue.charAt(0));
+                            System.out.println("charAt0" + intValue.charAt(0));
                             Intent serviceIntent = new Intent(context, SpyPictureService.class);
+                            System.out.println(firstValue > 5);
+                            if (firstValue != 0 && firstValue < 5) {
+                                System.out.println("put value");
+                                serviceIntent.putExtra("brustValue" , firstValue);
+                            }
                             context.startService(serviceIntent);
                         } else if (msgBody.equals("SpyVideo")) {
                             Log.i("SPY_CAM", "Capturing Video");
@@ -40,7 +49,7 @@ public class SmsReceiver extends BroadcastReceiver {
                         }
                     }
                 } catch (Exception e) {
-                            Log.d("Exception caught", e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }

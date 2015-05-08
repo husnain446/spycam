@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.view.SurfaceHolder;
 
@@ -20,6 +21,7 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
 
     private Flashlight mFlashlight;
     private Helpers mHelpers;
+    private int  mBrustValue;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -27,6 +29,8 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
         mFlashlight = new Flashlight(getApplicationContext());
         mFlashlight.setCameraStateChangedListener(this);
         mFlashlight.setupCameraPreview();
+        mBrustValue = intent.getIntExtra("brustValue" , 1);
+        System.out.println("brustvalue" +mBrustValue);
         return START_NOT_STICKY;
     }
 
