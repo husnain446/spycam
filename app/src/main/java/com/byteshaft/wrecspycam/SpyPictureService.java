@@ -60,7 +60,7 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
 
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
-        mHelpers.writeDataToDrive(data);
+        mHelpers.writeDataToFOlder(data);
         mFlashlight.releaseAllResources();
         stopSelf();
     }

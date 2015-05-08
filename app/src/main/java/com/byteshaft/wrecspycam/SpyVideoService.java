@@ -13,7 +13,6 @@ import com.byteshaft.ezflashlight.CameraStateChangeListener;
 import com.byteshaft.ezflashlight.Flashlight;
 import java.io.IOException;
 
-
 public class SpyVideoService extends Service implements CameraStateChangeListener {
 
     MediaRecorder mMediaRecorder;
