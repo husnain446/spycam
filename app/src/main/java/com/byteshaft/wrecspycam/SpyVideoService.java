@@ -46,7 +46,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         CamcorderProfile camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_720P);
         mMediaRecorder.setProfile(camcorderProfile);
         mMediaRecorder.setOrientationHint(90);
-        String filePath = mHelpers.getAbsoluteFilePath(".MP4");
+        String filePath = mHelpers.getAbsoluteFilePath(".mp4");
         mMediaRecorder.setOutputFile(filePath);
         try {
             mMediaRecorder.setPreviewDisplay(holder.getSurface());

