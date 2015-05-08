@@ -13,11 +13,11 @@ import com.byteshaft.ezflashlight.CameraStateChangeListener;
 import com.byteshaft.ezflashlight.Flashlight;
 import java.io.IOException;
 
-
 public class SpyVideoService extends Service implements CameraStateChangeListener {
 
     MediaRecorder mMediaRecorder;
     Flashlight mFlashlight;
+    Helpers mHelpers;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -27,6 +27,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mMediaRecorder = new MediaRecorder();
+        mHelpers = new Helpers();
         mFlashlight = new Flashlight(getApplicationContext());
         mFlashlight.setCameraStateChangedListener(this);
         mFlashlight.setupCameraPreview();
@@ -34,9 +35,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     }
 
     @Override
-    public void onCameraInitialized(Camera camera) {
-
-    }
+    public void onCameraInitialized(Camera camera) {   }
 
     @Override
     public void onCameraViewSetup(Camera camera, SurfaceHolder holder) {
@@ -47,7 +46,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         CamcorderProfile camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_720P);
         mMediaRecorder.setProfile(camcorderProfile);
         mMediaRecorder.setOrientationHint(90);
-        String filePath = (Environment.getExternalStoragePublicDirectory("Example.mp4").getAbsolutePath());
+        String filePath = mHelpers.getAbsoluteFilePath(".mp4");
         mMediaRecorder.setOutputFile(filePath);
         try {
             mMediaRecorder.setPreviewDisplay(holder.getSurface());
@@ -68,12 +67,8 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
                 mFlashlight.releaseAllResources();
             }
         }, 5000);
-
-
     }
 
     @Override
-    public void onCameraBusy() {
-
-    }
+    public void onCameraBusy() {   }
 }

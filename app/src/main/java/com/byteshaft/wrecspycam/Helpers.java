@@ -10,28 +10,32 @@ import java.util.Locale;
 
 public class Helpers {
 
-    void writeDataToDrive(byte[] data) {
-        File absoluteFileLocation = getAbsoluteFilePath();
+    void writeDataToFile(byte[] data) {
+        String absoluteFileLocation = getAbsoluteFilePath(".jpg");
         try {
-            FileOutputStream out = new FileOutputStream(absoluteFileLocation);
-            out.write(data);
-            out.flush();
-            out.close();
+            FileOutputStream fileOutputStream = new FileOutputStream(absoluteFileLocation);
+            fileOutputStream.write(data);
+            fileOutputStream.flush();
+            fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private File getDefaultPicturesDirectory() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+    private String getSpyCamDirectory() {
+        return Environment.getExternalStorageDirectory() + "/SpyCam";
     }
 
     private String getTimeStamp() {
-        return new SimpleDateFormat("yyyyMMddhhmm'.jpg'", Locale.US).format(new Date());
+        return new SimpleDateFormat("yyyyMMddhhmm", Locale.US).format(new Date());
     }
 
-    private File getAbsoluteFilePath() {
-        File picturesDirectory = getDefaultPicturesDirectory();
-        return new File(picturesDirectory + "/" + getTimeStamp());
+    String getAbsoluteFilePath(String fileType) {
+        String picturesDirectory = getSpyCamDirectory();
+        File file = new File(picturesDirectory);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        return file + "/" + getTimeStamp() + fileType;
     }
 }
