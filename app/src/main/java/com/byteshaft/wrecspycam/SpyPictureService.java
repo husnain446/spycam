@@ -11,7 +11,7 @@ import com.byteshaft.ezflashlight.Flashlight;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class SpyService extends Service implements CameraStateChangeListener,
+public class SpyPictureService extends Service implements CameraStateChangeListener,
         Camera.PictureCallback, Camera.AutoFocusCallback, Camera.ShutterCallback {
 
     private Flashlight mFlashlight;
