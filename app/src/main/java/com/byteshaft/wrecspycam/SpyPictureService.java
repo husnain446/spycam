@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.IBinder;
+import android.view.SurfaceHolder;
 
 import com.byteshaft.ezflashlight.CameraStateChangeListener;
 import com.byteshaft.ezflashlight.Flashlight;
@@ -35,12 +36,12 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
     }
 
     @Override
-    public void onCameraInitialized() {
+    public void onCameraInitialized(Camera camera) {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
-    public void onCameraViewSetup(Camera camera) {
+    public void onCameraViewSetup(Camera camera, SurfaceHolder holder) {
         Camera.Parameters params = camera.getParameters();
         List<Camera.Size> sizes = params.getSupportedPreviewSizes();
         Camera.Size selected = sizes.get(0);

