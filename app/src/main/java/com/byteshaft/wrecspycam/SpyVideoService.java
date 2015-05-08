@@ -6,6 +6,7 @@ import android.os.IBinder;
 
 
 public class SpyVideoService extends Service {
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
