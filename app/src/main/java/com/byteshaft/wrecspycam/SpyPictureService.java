@@ -1,14 +1,17 @@
 package com.byteshaft.wrecspycam;
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Intent;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.IBinder;
 
 import com.byteshaft.ezflashlight.CameraStateChangeListener;
 import com.byteshaft.ezflashlight.Flashlight;
 
 import java.util.List;
+
 
 @SuppressWarnings("deprecation")
 public class SpyPictureService extends Service implements CameraStateChangeListener,
@@ -26,10 +29,16 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
         return START_NOT_STICKY;
     }
 
-    @Override public IBinder onBind(Intent intent) { return null; }
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
-    @Override public void onCameraInitialized() {  }
+    @Override
+    public void onCameraInitialized() {
+    }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onCameraViewSetup(Camera camera) {
         Camera.Parameters params = camera.getParameters();
@@ -44,7 +53,9 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
         camera.autoFocus(this);
     }
 
-    @Override public void onCameraBusy() {   }
+    @Override
+    public void onCameraBusy() {
+    }
 
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
@@ -60,5 +71,7 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
         }
     }
 
-    @Override public void onShutter() {  }
+    @Override
+    public void onShutter() {
+    }
 }

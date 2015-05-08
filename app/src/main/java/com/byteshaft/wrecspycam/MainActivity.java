@@ -1,13 +1,7 @@
 package com.byteshaft.wrecspycam;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-
-import com.byteshaft.ezflashlight.Flashlight;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class MainActivity extends Activity {
 
