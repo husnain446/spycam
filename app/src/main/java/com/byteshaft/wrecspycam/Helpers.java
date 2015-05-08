@@ -11,7 +11,7 @@ import java.util.Locale;
 public class Helpers {
 
     void writeDataToFOlder(byte[] data) {
-        String absoluteFileLocation = getAbsoluteFilePath();
+        String absoluteFileLocation = getAbsoluteFilePath(".jpg");
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(absoluteFileLocation);
             fileOutputStream.write(data);
@@ -27,15 +27,15 @@ public class Helpers {
     }
 
     private String getTimeStamp() {
-        return new SimpleDateFormat("yyyyMMddhhmm'.jpg'", Locale.US).format(new Date());
+        return new SimpleDateFormat("yyyyMMddhhmm", Locale.US).format(new Date());
     }
 
-    private String getAbsoluteFilePath() {
+    String getAbsoluteFilePath(String fileType) {
         String picturesDirectory = getSpycamDirectory();
         File file = new File(picturesDirectory);
         if (!file.exists()) {
             file.mkdir();
         }
-        return file + "/" + getTimeStamp();
+        return file + "/" + getTimeStamp() + fileType;
     }
 }

@@ -17,6 +17,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
 
     MediaRecorder mMediaRecorder;
     Flashlight mFlashlight;
+    Helpers mHelpers;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -26,6 +27,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mMediaRecorder = new MediaRecorder();
+        mHelpers = new Helpers();
         mFlashlight = new Flashlight(getApplicationContext());
         mFlashlight.setCameraStateChangedListener(this);
         mFlashlight.setupCameraPreview();
@@ -44,7 +46,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         CamcorderProfile camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_720P);
         mMediaRecorder.setProfile(camcorderProfile);
         mMediaRecorder.setOrientationHint(90);
-        String filePath = (Environment.getExternalStoragePublicDirectory("Example.mp4").getAbsolutePath());
+        String filePath = mHelpers.getAbsoluteFilePath(".MP4");
         mMediaRecorder.setOutputFile(filePath);
         try {
             mMediaRecorder.setPreviewDisplay(holder.getSurface());
