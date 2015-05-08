@@ -15,6 +15,7 @@ package com.byteshaft.wrecspycam;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
@@ -124,12 +125,14 @@ public class CameraSurface extends ContextWrapper implements SurfaceHolder.Callb
         Camera.Size selected = sizes.get(0);
         mParams.setPreviewSize(selected.width, selected.height);
         mCamera.setParameters(mParams);
+        mCamera.enableShutterSound(false);
         mCamera.startPreview();
         mCamera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
             public void onAutoFocus(boolean success, Camera camera) {
                 if (success) {
                     mCamera.takePicture(CameraSurface.this, null, null, CameraSurface.this);
+
                 }
             }
         });
@@ -152,6 +155,8 @@ public class CameraSurface extends ContextWrapper implements SurfaceHolder.Callb
         writeDataToDrive(data);
         releaseCamera();
         destroy();
+        Intent intent = new Intent(this , SpyService.class);
+        stopService(intent);
     }
 
     @Override

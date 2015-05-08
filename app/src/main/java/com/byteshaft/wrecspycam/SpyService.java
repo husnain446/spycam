@@ -38,12 +38,4 @@ public class SpyService extends Service {
         }, delay);
 
     }
-
-//    private void releaseCamera() {
-//        mCamera.release();
-//        if (mCamera != null) {
-//            mCamera = null;
-//            mCameraSurface.destroy();
-//        }
-//    }
 }
