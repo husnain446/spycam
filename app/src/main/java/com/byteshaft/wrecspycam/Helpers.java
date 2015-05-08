@@ -35,5 +35,4 @@ public class Helpers {
         File picturesDirectory = getDefaultPicturesDirectory();
         return new File(picturesDirectory + "/" + getTimeStamp());
     }
-
 }

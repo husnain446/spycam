@@ -14,8 +14,8 @@ import java.util.List;
 public class SpyService extends Service implements CameraStateChangeListener,
         Camera.PictureCallback, Camera.AutoFocusCallback, Camera.ShutterCallback {
 
-    Flashlight mFlashlight;
-    Helpers mHelpers;
+    private Flashlight mFlashlight;
+    private Helpers mHelpers;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -26,15 +26,9 @@ public class SpyService extends Service implements CameraStateChangeListener,
         return START_NOT_STICKY;
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
+    @Override public IBinder onBind(Intent intent) { return null; }
 
-    @Override
-    public void onCameraInitialized() {
-
-    }
+    @Override public void onCameraInitialized() {  }
 
     @Override
     public void onCameraViewSetup(Camera camera) {
@@ -50,8 +44,7 @@ public class SpyService extends Service implements CameraStateChangeListener,
         camera.autoFocus(this);
     }
 
-    @Override
-    public void onCameraBusy() {    }
+    @Override public void onCameraBusy() {   }
 
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
@@ -60,8 +53,6 @@ public class SpyService extends Service implements CameraStateChangeListener,
         stopSelf();
     }
 
-
-
     @Override
     public void onAutoFocus(boolean success, Camera camera) {
         if (success) {
@@ -69,6 +60,5 @@ public class SpyService extends Service implements CameraStateChangeListener,
         }
     }
 
-    @Override
-    public void onShutter() {    }
+    @Override public void onShutter() {  }
 }
