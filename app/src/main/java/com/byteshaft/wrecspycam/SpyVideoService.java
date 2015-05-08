@@ -34,9 +34,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     }
 
     @Override
-    public void onCameraInitialized(Camera camera) {
-
-    }
+    public void onCameraInitialized(Camera camera) {   }
 
     @Override
     public void onCameraViewSetup(Camera camera, SurfaceHolder holder) {
@@ -68,12 +66,8 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
                 mFlashlight.releaseAllResources();
             }
         }, 5000);
-
-
     }
 
     @Override
-    public void onCameraBusy() {
-
-    }
+    public void onCameraBusy() {   }
 }
