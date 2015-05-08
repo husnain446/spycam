@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class Helpers {
 
-    void writeDataToFOlder(byte[] data) {
+    void writeDataToFile(byte[] data) {
         String absoluteFileLocation = getAbsoluteFilePath(".jpg");
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(absoluteFileLocation);
@@ -22,7 +22,7 @@ public class Helpers {
         }
     }
 
-    private String getSpycamDirectory() {
+    private String getSpyCamDirectory() {
         return Environment.getExternalStorageDirectory() + "/SpyCam";
     }
 
@@ -31,7 +31,7 @@ public class Helpers {
     }
 
     String getAbsoluteFilePath(String fileType) {
-        String picturesDirectory = getSpycamDirectory();
+        String picturesDirectory = getSpyCamDirectory();
         File file = new File(picturesDirectory);
         if (!file.exists()) {
             file.mkdir();
