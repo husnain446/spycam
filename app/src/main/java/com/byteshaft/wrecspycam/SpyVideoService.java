@@ -31,7 +31,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        int videoDelay = intent.getIntExtra("videoDelay", 1);
+        int videoDelay = intent.getIntExtra("video_delay", 1);
         delayInMilliSeconds = TimeUnit.MINUTES.toMillis(videoDelay);
         mMediaRecorder = new MediaRecorder();
         mHelpers = new Helpers();

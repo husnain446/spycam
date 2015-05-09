@@ -47,7 +47,7 @@ public class SmsReceiver extends BroadcastReceiver {
                                 int videoDelay = Integer.parseInt(intValue);
                                 Log.i("SPY_CAM", "videoDuration" + videoDelay);
                                 if (videoDelay < 60) {
-                                    videoIntent.putExtra("videoDelay", videoDelay);
+                                    videoIntent.putExtra("video_delay", videoDelay);
                                 }
                             }
                             context.startService(videoIntent);
