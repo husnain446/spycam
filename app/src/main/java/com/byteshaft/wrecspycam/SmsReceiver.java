@@ -8,9 +8,9 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 public class SmsReceiver extends BroadcastReceiver {
-    String msg_from;
-    String msgBody;
-    int firstValue;
+    private String msg_from;
+    private String msgBody;
+    private int firstValue;
 
     @Override
     public void onReceive(Context context, Intent intent) {
