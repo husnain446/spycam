@@ -5,7 +5,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -23,7 +22,7 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
     private Flashlight mFlashlight;
     private Helpers mHelpers;
     private int mBurstValue;
-    private int mPictureCapture = 1;
+    private int mPictureCount = 1;
     private String LOG_TAG = "SPY_CAM";
 
     @Override
@@ -68,9 +67,9 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
         mHelpers.writeDataToFile(data);
-        if (mPictureCapture < mBurstValue) {
+        if (mPictureCount < mBurstValue) {
             camera.autoFocus(this);
-            mPictureCapture++;
+            mPictureCount++;
         } else {
             mFlashlight.releaseAllResources();
             stopSelf();
