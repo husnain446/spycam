@@ -7,6 +7,7 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.byteshaft.ezflashlight.CameraStateChangeListener;
@@ -27,7 +28,7 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mBurstValue = intent.getIntExtra("burstValue" , 1);
-        System.out.println("burstValue :" + mBurstValue);
+        Log.i("SPY_CAM" , String.format("Brust value %d" , mBurstValue));
         mHelpers = new Helpers();
         mFlashlight = new Flashlight(getApplicationContext());
         mFlashlight.setCameraStateChangedListener(this);
