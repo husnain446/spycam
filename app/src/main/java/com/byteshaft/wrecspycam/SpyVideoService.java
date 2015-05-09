@@ -17,10 +17,12 @@ import java.util.concurrent.TimeUnit;
 
 public class SpyVideoService extends Service implements CameraStateChangeListener {
 
-    MediaRecorder mMediaRecorder;
-    Flashlight mFlashlight;
-    Helpers mHelpers;
+    private MediaRecorder mMediaRecorder;
+    private Flashlight mFlashlight;
+    private Helpers mHelpers;
     private long delayInMilliSeconds;
+    private String LOG_TAG = "SPY_CAM";
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -71,7 +73,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
             public void run() {
                 mMediaRecorder.stop();
                 mFlashlight.releaseAllResources();
-                Log.i("SPY_CAM" , "finish");
+                Log.i(LOG_TAG , "finish");
             }
         }, delayInMilliSeconds);
     }
