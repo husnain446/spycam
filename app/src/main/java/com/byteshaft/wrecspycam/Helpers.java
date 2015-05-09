@@ -27,7 +27,7 @@ public class Helpers {
     }
 
     private String getTimeStamp() {
-        return new SimpleDateFormat("yyyyMMddhhmm", Locale.US).format(new Date());
+        return new SimpleDateFormat("yyyyMMddhhmmss", Locale.US).format(new Date());
     }
 
     String getAbsoluteFilePath(String fileType) {

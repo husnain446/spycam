@@ -21,16 +21,17 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
 
     private Flashlight mFlashlight;
     private Helpers mHelpers;
-    private int  mBrustValue;
+    private int  mBurstValue;
+    private int mPictureCapture = 1;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mBurstValue = intent.getIntExtra("burstValue" , 1);
+        System.out.println("burstValue :" + mBurstValue);
         mHelpers = new Helpers();
         mFlashlight = new Flashlight(getApplicationContext());
         mFlashlight.setCameraStateChangedListener(this);
         mFlashlight.setupCameraPreview();
-        mBrustValue = intent.getIntExtra("brustValue" , 1);
-        System.out.println("brustvalue" +mBrustValue);
         return START_NOT_STICKY;
     }
 
@@ -64,13 +65,22 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
 
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
+        System.out.println("picTakenCalled");
         mHelpers.writeDataToFile(data);
-        mFlashlight.releaseAllResources();
-        stopSelf();
+        System.out.println(mPictureCapture < mBurstValue);
+        if (mPictureCapture < mBurstValue) {
+            camera.autoFocus(this);
+            mPictureCapture++;
+            System.out.println(mPictureCapture);
+        } else {
+            mFlashlight.releaseAllResources();
+            stopSelf();
+        }
     }
 
     @Override
     public void onAutoFocus(boolean success, Camera camera) {
+        System.out.println("autoFocus");
         if (success) {
             camera.takePicture(this, null, null, this);
         }
