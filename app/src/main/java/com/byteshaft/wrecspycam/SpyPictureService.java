@@ -21,7 +21,7 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
 
     private Flashlight mFlashlight;
     private Helpers mHelpers;
-    private int  mBurstValue;
+    private int mBurstValue;
     private int mPictureCapture = 1;
 
     @Override
