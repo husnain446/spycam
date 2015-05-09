@@ -68,7 +68,6 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
         mHelpers.writeDataToFile(data);
-        System.out.println(mPictureCapture < mBurstValue);
         if (mPictureCapture < mBurstValue) {
             camera.autoFocus(this);
             mPictureCapture++;
