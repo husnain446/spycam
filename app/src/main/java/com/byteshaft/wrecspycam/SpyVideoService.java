@@ -7,17 +7,22 @@ import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.byteshaft.ezflashlight.CameraStateChangeListener;
 import com.byteshaft.ezflashlight.Flashlight;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class SpyVideoService extends Service implements CameraStateChangeListener {
 
-    MediaRecorder mMediaRecorder;
-    Flashlight mFlashlight;
-    Helpers mHelpers;
+    private MediaRecorder mMediaRecorder;
+    private Flashlight mFlashlight;
+    private Helpers mHelpers;
+    private long delayInMilliSeconds;
+    private String LOG_TAG = "SPY_CAM";
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -26,6 +31,8 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        int videoDelay = intent.getIntExtra("video_delay", 1);
+        delayInMilliSeconds = TimeUnit.MINUTES.toMillis(videoDelay);
         mMediaRecorder = new MediaRecorder();
         mHelpers = new Helpers();
         mFlashlight = new Flashlight(getApplicationContext());
@@ -43,7 +50,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         mMediaRecorder.setCamera(camera);
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        CamcorderProfile camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_720P);
+        CamcorderProfile camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW);
         mMediaRecorder.setProfile(camcorderProfile);
         mMediaRecorder.setOrientationHint(90);
         String filePath = mHelpers.getAbsoluteFilePath(".mp4");
@@ -65,8 +72,9 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
             public void run() {
                 mMediaRecorder.stop();
                 mFlashlight.releaseAllResources();
+                Log.i(LOG_TAG , "finish");
             }
-        }, 5000);
+        }, delayInMilliSeconds);
     }
 
     @Override

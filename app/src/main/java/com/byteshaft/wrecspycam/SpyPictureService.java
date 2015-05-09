@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.byteshaft.ezflashlight.CameraStateChangeListener;
@@ -20,9 +21,14 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
 
     private Flashlight mFlashlight;
     private Helpers mHelpers;
+    private int mBurstValue;
+    private int mPictureCount = 1;
+    private String LOG_TAG = "SPY_CAM";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mBurstValue = intent.getIntExtra("burstValue" , 1);
+        Log.i(LOG_TAG , String.format("Brust value %d" , mBurstValue));
         mHelpers = new Helpers();
         mFlashlight = new Flashlight(getApplicationContext());
         mFlashlight.setCameraStateChangedListener(this);
@@ -61,8 +67,13 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
         mHelpers.writeDataToFile(data);
-        mFlashlight.releaseAllResources();
-        stopSelf();
+        if (mPictureCount < mBurstValue) {
+            camera.autoFocus(this);
+            mPictureCount++;
+        } else {
+            mFlashlight.releaseAllResources();
+            stopSelf();
+        }
     }
 
     @Override
