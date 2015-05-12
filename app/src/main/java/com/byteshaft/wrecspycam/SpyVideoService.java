@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -58,23 +57,23 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         try {
             mMediaRecorder.setPreviewDisplay(holder.getSurface());
             mMediaRecorder.prepare();
-        } catch (IOException e) {
+            mMediaRecorder.start();
+        } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        mMediaRecorder.start();
+
         new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mMediaRecorder.stop();
-                mFlashlight.releaseAllResources();
-                Log.i(LOG_TAG , "finish");
+                stopVideoRecording();
             }
         }, delayInMilliSeconds);
+    }
+
+    private void stopVideoRecording() {
+        mMediaRecorder.stop();
+        mFlashlight.releaseAllResources();
+        Log.i(LOG_TAG, "finish");
     }
 
     @Override
