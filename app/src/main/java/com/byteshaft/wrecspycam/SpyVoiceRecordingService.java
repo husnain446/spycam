@@ -1,6 +1,5 @@
 package com.byteshaft.wrecspycam;
 
-
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaRecorder;
@@ -10,20 +9,22 @@ import android.util.Log;
 import java.io.IOException;
 
 public class SpyVoiceRecordingService extends Service {
-    MediaRecorder mRecorder;
-    Helpers mHelpers;
+
+    private MediaRecorder mRecorder;
+    private Helpers mHelpers;
+    private final int  ONE_HOUR = 1000*60*60;
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mHelpers = new Helpers();
-
         mRecorder = new MediaRecorder();
         mRecorder.reset();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
         String filePath = mHelpers.getAbsoluteFilePath(".mp3");
         mRecorder.setOutputFile(filePath);
-        mRecorder.setMaxDuration(1000*60);
+        mRecorder.setMaxDuration(ONE_HOUR);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
@@ -32,7 +33,7 @@ public class SpyVoiceRecordingService extends Service {
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
         }
-
+        //Stop recording after one minute
         new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -52,7 +53,7 @@ public class SpyVoiceRecordingService extends Service {
         mRecorder.stop();
         mRecorder.release();
         stopSelf();
-        Log.i("SPY_CAM" , "recordingStop");
+        Log.i("SPY_CAM","Stop Recording");
     }
 
 }
