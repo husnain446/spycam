@@ -17,7 +17,6 @@ import it.neokree.materialtabs.MaterialTabListener;
 
 public class MainActivity extends ActionBarActivity implements MaterialTabListener {
     private ViewPager pager;
-    private ViewPagerAdapter pagerAdapter;
     MaterialTabHost tabHost;
     private Resources res;
 
@@ -28,20 +27,18 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1E90FF")));
         setContentView(R.layout.activity_main);
         res = this.getResources();
-
         tabHost = (MaterialTabHost) this.findViewById(R.id.tabHost);
         pager = (ViewPager) this.findViewById(R.id.pager);
-        // init view pager
-        pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
         pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                // when user do a swipe the selected tab change
+                // swipe to change tab
                 tabHost.setSelectedNavigationItem(position);
             }
         });
-        // insert all tabs from pagerAdapter data
+
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
             tabHost.addTab(
                     tabHost.newTab()
@@ -108,9 +105,7 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
         }
     }
 
-    /*
-    * It doesn't matter the color of the icons, but they must have solid colors
-    */
+
     private Drawable getIcon(int position) {
         switch (position) {
             case 0:
