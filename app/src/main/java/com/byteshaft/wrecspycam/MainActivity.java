@@ -1,6 +1,5 @@
 package com.byteshaft.wrecspycam;
 
-import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -78,9 +77,13 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
             Fragment result = new Fragment();
             switch (num) {
                 case 0:
-                    result =   new FragmentText();
+                    result = new VideoPlayerFragment();
                     break;
-
+                case 1:
+                    result = new SoundRecorderFragment();
+                    break;
+                case 2:
+                    result = new ImagesFragment();
             }
             return result;
         }
