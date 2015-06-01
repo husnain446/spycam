@@ -54,11 +54,9 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
         pager.setCurrentItem(tab.getPosition());
     }
 
-
     @Override
     public void onTabReselected(MaterialTab tab) {
     }
-
 
     @Override
     public void onTabUnselected(MaterialTab tab) {

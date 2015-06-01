@@ -56,7 +56,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         mMediaRecorder.setProfile(camcorderProfile);
         mMediaRecorder.setOrientationHint(90);
         mMediaRecorder.setMaxDuration((int) delayInMilliSeconds);
-        System.out.println(delayInMilliSeconds);
+        mMediaRecorder.setVideoFrameRate(24);
         String filePath = mHelpers.getAbsoluteFilePath(".mp4");
         mMediaRecorder.setOutputFile(filePath);
         try {
@@ -76,7 +76,11 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     }
 
     void stopVideoRecording() {
-        mMediaRecorder.stop();
+        try {
+            mMediaRecorder.stop();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
         mFlashlight.releaseAllResources();
         videoServiceRunning = false;
         Log.i(LOG_TAG, "finish");
