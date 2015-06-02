@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
@@ -20,14 +21,18 @@ import java.util.Calendar;
 
 public class VideoPlayerFragment extends Fragment implements Button.OnClickListener , OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    View mView;
-    Button mButton;
-    Button dateButton;
-    Button timeButton;
+    private View mView;
+    private Button mButton;
+    private Button dateButton;
+    private Button timeButton;
+    private Button mButtonSetAlarm;
     public static final String DATEPICKER_TAG = "datepicker";
     public static final String TIMEPICKER_TAG = "timepicker";
-    DatePickerDialog datePickerDialog;
-    TimePickerDialog timePickerDialog;
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    private TextView mTextViewDate;
+    private TextView mTextViewTime;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
@@ -47,8 +52,12 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
         mButton.setOnClickListener(this);
         dateButton = (Button) mView.findViewById(R.id.dateButton);
         timeButton = (Button) mView.findViewById(R.id.timeButton);
+        mTextViewDate = (TextView) mView.findViewById(R.id.textViewDate);
+        mTextViewTime = (TextView) mView.findViewById(R.id.textViewTime);
+        mButtonSetAlarm = (Button) mView.findViewById(R.id.buttonSetAlarm);
         dateButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
+        mButtonSetAlarm.setOnClickListener(this);
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
@@ -88,8 +97,17 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
             case R.id.timeButton:
                 timePickerDialog.show(getFragmentManager(), TIMEPICKER_TAG);
                 break;
+            case R.id.buttonSetAlarm:
+                System.out.println(mTextViewDate == null);
+                System.out.println(mTextViewTime == null);
+
+                break;
         }
     }
+
+//    private void getTimeDateAndsave() {
+//        if ()
+//    }
 
     private void startVideoRecordingService() {
         Intent videoIntent = new Intent(getActivity() , SpyVideoService.class);
@@ -100,10 +118,13 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
         Toast.makeText(getActivity(), "new date:" + year + "-" + month + "-" + day, Toast.LENGTH_SHORT).show();
+        mTextViewDate.setText("  Date : " + year+"-"+month+"-"+day);
+
     }
 
     @Override
     public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
         Toast.makeText(getActivity(), "new time:" + hourOfDay + "-" + minute, Toast.LENGTH_SHORT).show();
+        mTextViewTime.setText("  Time : " + hourOfDay + ":" + minute);
     }
 }

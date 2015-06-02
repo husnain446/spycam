@@ -1,6 +1,10 @@
 package com.byteshaft.wrecspycam;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
+import android.preference.PreferenceManager;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,6 +13,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Helpers {
+
+    final private String ALARM_STATE = "Alarm_State";
 
     void writeDataToFile(byte[] data) {
         String absoluteFileLocation = getAbsoluteFilePath(".jpg");
@@ -38,4 +44,20 @@ public class Helpers {
         }
         return file + "/" + getTimeStamp() + fileType;
     }
+
+    void saveAlarmState(boolean state , Context context) {
+        SharedPreferences preferences = getPreferenceManager(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(ALARM_STATE, state);
+        editor.apply();
+    }
+    private SharedPreferences getPreferenceManager(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    boolean getPreviouslySelectedCityName(Context context) {
+        SharedPreferences preferences = getPreferenceManager(context);
+        return preferences.getBoolean(ALARM_STATE, false);
+    }
+
 }

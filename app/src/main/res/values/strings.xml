@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Wrec Spy Cam</string>
     <string name="record">Record</string>
+    <string name="textDate">Select Date</string>
+    <string name="selectTime">Select Time</string>
+    <string name="scheduleAlarm">Schedule Alarm</string>
+    <string name="setAlarm">Set Alarm</string>
 </resources>
