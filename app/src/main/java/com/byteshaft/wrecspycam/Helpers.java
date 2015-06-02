@@ -55,7 +55,7 @@ public class Helpers {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    boolean getPreviouslySelectedCityName(Context context) {
+    boolean getAlarmState(Context context) {
         SharedPreferences preferences = getPreferenceManager(context);
         return preferences.getBoolean(ALARM_STATE, false);
     }

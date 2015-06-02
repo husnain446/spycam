@@ -67,9 +67,8 @@
         android:layout_alignStart="@+id/timeButton" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setAlarm"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/buttonSetAlarm"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

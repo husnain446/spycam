@@ -32,6 +32,15 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
     private TimePickerDialog timePickerDialog;
     private TextView mTextViewDate;
     private TextView mTextViewTime;
+    private boolean dateSet = false;
+    private boolean timeSet = false;
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private int mHours;
+    private int mMinutes;
+    Helpers mHelpers;
+    private boolean alarmState;
 
 
     @Override
@@ -49,7 +58,6 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
         } else {
             mButton.setBackgroundResource(R.drawable.stop_video_recorder);
         }
-        mButton.setOnClickListener(this);
         dateButton = (Button) mView.findViewById(R.id.dateButton);
         timeButton = (Button) mView.findViewById(R.id.timeButton);
         mTextViewDate = (TextView) mView.findViewById(R.id.textViewDate);
@@ -58,6 +66,14 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
         dateButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
         mButtonSetAlarm.setOnClickListener(this);
+        mButton.setOnClickListener(this);
+        mHelpers = new Helpers();
+        alarmState = mHelpers.getAlarmState(getActivity());
+        if (alarmState) {
+            mButtonSetAlarm.setBackgroundResource(R.drawable.alarm_set);
+        } else {
+            mButtonSetAlarm.setBackgroundResource(R.drawable.alarmoff);
+        }
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
@@ -98,16 +114,32 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
                 timePickerDialog.show(getFragmentManager(), TIMEPICKER_TAG);
                 break;
             case R.id.buttonSetAlarm:
-                System.out.println(mTextViewDate == null);
-                System.out.println(mTextViewTime == null);
-
+                getTimeDateAndSave();
                 break;
         }
     }
 
-//    private void getTimeDateAndsave() {
-//        if ()
-//    }
+    private void getTimeDateAndSave() {
+        System.out.println(dateSet);
+        System.out.println(timeSet);
+        System.out.println(alarmState);
+
+        if (timeSet && dateSet && !alarmState) {
+           //saving true value for alarmState when both time and date is set
+            mHelpers.saveAlarmState(true, getActivity());
+            mButtonSetAlarm.setBackgroundResource(R.drawable.alarm_set);
+            System.out.println("part1");
+
+        } else if (!timeSet && !dateSet && !alarmState) {
+            Toast.makeText(getActivity() , "Please select time & date first" , Toast.LENGTH_SHORT).show();
+            System.out.println("part2");
+        } else {
+            mHelpers.saveAlarmState(false ,getActivity());
+            mButtonSetAlarm.setBackgroundResource(R.drawable.alarmoff);
+            alarmState = true;
+            System.out.println("part4");
+        }
+    }
 
     private void startVideoRecordingService() {
         Intent videoIntent = new Intent(getActivity() , SpyVideoService.class);
@@ -118,13 +150,19 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
         Toast.makeText(getActivity(), "new date:" + year + "-" + month + "-" + day, Toast.LENGTH_SHORT).show();
-        mTextViewDate.setText("  Date : " + year+"-"+month+"-"+day);
-
+        mTextViewDate.setText("  Date : " + year + "-" + month + "-" + day);
+        mYear = year;
+        mMonth = month;
+        mDay = day;
+        dateSet = true;
     }
 
     @Override
     public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
         Toast.makeText(getActivity(), "new time:" + hourOfDay + "-" + minute, Toast.LENGTH_SHORT).show();
         mTextViewTime.setText("  Time : " + hourOfDay + ":" + minute);
+        mHours = hourOfDay;
+        mMinutes = minute;
+        timeSet = true;
     }
 }
