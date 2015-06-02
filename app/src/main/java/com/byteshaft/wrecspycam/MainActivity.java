@@ -50,7 +50,6 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
 
     @Override
     public void onTabSelected(MaterialTab tab) {
-// when the tab is clicked the pager swipe content to the tab position
         pager.setCurrentItem(tab.getPosition());
     }
 
