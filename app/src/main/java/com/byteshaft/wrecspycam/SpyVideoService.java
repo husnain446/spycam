@@ -75,7 +75,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         }, delayInMilliSeconds);
     }
 
-    void stopVideoRecording() {
+    private void stopVideoRecording() {
         try {
             mMediaRecorder.stop();
         } catch (RuntimeException e) {

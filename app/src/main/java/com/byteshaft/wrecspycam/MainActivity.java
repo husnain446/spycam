@@ -17,7 +17,7 @@ import it.neokree.materialtabs.MaterialTabListener;
 
 public class MainActivity extends ActionBarActivity implements MaterialTabListener {
     private ViewPager pager;
-    MaterialTabHost tabHost;
+    private MaterialTabHost tabHost;
     private Resources res;
 
     @Override
