@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#E0D0F5"
+    >
+
+    <Button
+        android:id="@+id/videoRecorderButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:gravity="bottom"
+        android:layout_marginTop="58dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:text="@string/scheduleAlarm"
+        android:textStyle="bold"
+        android:id="@+id/textViewAlarm"
+        android:layout_below="@+id/videoRecorderButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textDate"
+        android:id="@+id/dateButton"
+        android:textAllCaps="false"
+        android:layout_marginTop="70dp"
+        android:layout_below="@+id/videoRecorderButton"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/selectTime"
+        android:id="@+id/timeButton"
+        android:textAllCaps="false"
+        android:layout_alignTop="@+id/dateButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewDate"
+        android:textStyle="bold"
+        android:layout_below="@+id/timeButton"
+        android:layout_alignLeft="@+id/dateButton"
+        android:layout_alignStart="@+id/dateButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:id="@+id/textViewTime"
+        android:layout_below="@+id/timeButton"
+        android:layout_alignLeft="@+id/timeButton"
+        android:layout_alignStart="@+id/timeButton" />
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/buttonSetAlarm"
+        android:layout_below="@+id/textViewTime"
+        android:layout_toRightOf="@+id/textViewAlarm"
+        android:layout_toEndOf="@+id/textViewAlarm"
+        android:layout_marginTop="71dp" />
+
+</RelativeLayout>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -22,7 +21,8 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     private Helpers mHelpers;
     private long delayInMilliSeconds;
     private String LOG_TAG = "SPY_CAM";
-
+    public static boolean videoServiceRunning = false;
+    private boolean serviceStopped = false;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -31,13 +31,14 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        int videoDelay = intent.getIntExtra("video_delay", 1);
-        delayInMilliSeconds = TimeUnit.MINUTES.toMillis(videoDelay);
+        int mVideoDelay = intent.getIntExtra("video_delay", 1);
+        delayInMilliSeconds = TimeUnit.MINUTES.toMillis(mVideoDelay);
         mMediaRecorder = new MediaRecorder();
-        mHelpers = new Helpers();
+        mHelpers = new Helpers(getApplicationContext());
         mFlashlight = new Flashlight(getApplicationContext());
         mFlashlight.setCameraStateChangedListener(this);
         mFlashlight.setupCameraPreview();
+        videoServiceRunning = true;
         return START_NOT_STICKY;
     }
 
@@ -53,30 +54,48 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         CamcorderProfile camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_LOW);
         mMediaRecorder.setProfile(camcorderProfile);
         mMediaRecorder.setOrientationHint(90);
+        mMediaRecorder.setMaxDuration((int) delayInMilliSeconds);
+        mMediaRecorder.setVideoFrameRate(24);
         String filePath = mHelpers.getAbsoluteFilePath(".mp4");
         mMediaRecorder.setOutputFile(filePath);
         try {
             mMediaRecorder.setPreviewDisplay(holder.getSurface());
             mMediaRecorder.prepare();
-        } catch (IOException e) {
+            mMediaRecorder.start();
+            serviceStopped = true;
+        } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
         }
+
+        if (!serviceStopped) {
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    stopVideoRecording();
+                }
+            }, delayInMilliSeconds);
+        }
+    }
+
+    private void stopVideoRecording() {
         try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
+            mMediaRecorder.stop();
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
-        mMediaRecorder.start();
-        new android.os.Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mMediaRecorder.stop();
-                mFlashlight.releaseAllResources();
-                Log.i(LOG_TAG , "finish");
-            }
-        }, delayInMilliSeconds);
+        mFlashlight.releaseAllResources();
+        videoServiceRunning = false;
+        Log.i(LOG_TAG, "Recording Stop");
     }
 
     @Override
-    public void onCameraBusy() {   }
+    public void onDestroy() {
+        super.onDestroy();
+        stopVideoRecording();
+    }
+
+    @Override
+    public void onCameraBusy() {
+
+    }
 }

