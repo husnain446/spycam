@@ -9,10 +9,9 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:gravity="bottom"
+        android:layout_marginTop="58dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -70,8 +69,9 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/buttonSetAlarm"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="51dp" />
+        android:layout_below="@+id/textViewTime"
+        android:layout_toRightOf="@+id/textViewAlarm"
+        android:layout_toEndOf="@+id/textViewAlarm"
+        android:layout_marginTop="71dp" />
 
 </RelativeLayout>

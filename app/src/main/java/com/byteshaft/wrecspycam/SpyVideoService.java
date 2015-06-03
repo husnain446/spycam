@@ -23,6 +23,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     private long delayInMilliSeconds;
     private String LOG_TAG = "SPY_CAM";
     static boolean videoServiceRunning = false;
+    private boolean serviceStopped = false;
 
 
     @Override
@@ -63,16 +64,20 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
             mMediaRecorder.setPreviewDisplay(holder.getSurface());
             mMediaRecorder.prepare();
             mMediaRecorder.start();
+            serviceStopped = true;
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
         }
-
-        new android.os.Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                stopVideoRecording();
-            }
-        }, delayInMilliSeconds);
+        System.out.println("Service stop" +serviceStopped);
+        if (!serviceStopped) {
+            System.out.println(!serviceStopped);
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    stopVideoRecording();
+                }
+            }, delayInMilliSeconds);
+        }
     }
 
     private void stopVideoRecording() {
@@ -90,6 +95,9 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     public void onDestroy() {
         super.onDestroy();
         stopVideoRecording();
+        System.out.println("serviceDestroyed");
+        System.out.println(serviceStopped);
+
     }
 
     @Override

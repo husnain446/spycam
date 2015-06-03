@@ -120,24 +120,20 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
     }
 
     private void getTimeDateAndSave() {
-        System.out.println(dateSet);
-        System.out.println(timeSet);
-        System.out.println(alarmState);
-
+        alarmState = mHelpers.getAlarmState(getActivity());
         if (timeSet && dateSet && !alarmState) {
            //saving true value for alarmState when both time and date is set
             mHelpers.saveAlarmState(true, getActivity());
             mButtonSetAlarm.setBackgroundResource(R.drawable.alarm_set);
-            System.out.println("part1");
-
+            mHelpers.setAlarmForVideoRecording(getActivity(), mDay, mMonth, mYear, mHours, mMinutes);
         } else if (!timeSet && !dateSet && !alarmState) {
             Toast.makeText(getActivity() , "Please select time & date first" , Toast.LENGTH_SHORT).show();
-            System.out.println("part2");
         } else {
-            mHelpers.saveAlarmState(false ,getActivity());
+            mHelpers.saveAlarmState(false, getActivity());
             mButtonSetAlarm.setBackgroundResource(R.drawable.alarmoff);
-            alarmState = true;
-            System.out.println("part4");
+            mHelpers.removeVideoRecordingAlarams();
+            Intent intent = new Intent(getActivity(), SpyVideoService.class);
+            getActivity().stopService(intent);
         }
     }
 
@@ -151,6 +147,7 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
         Toast.makeText(getActivity(), "new date:" + year + "-" + month + "-" + day, Toast.LENGTH_SHORT).show();
         mTextViewDate.setText("  Date : " + year + "-" + month + "-" + day);
+        Log.i("SPY_CAM", "  Date : " + year + "-" + month + "-" + day);
         mYear = year;
         mMonth = month;
         mDay = day;
@@ -163,6 +160,7 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
         mTextViewTime.setText("  Time : " + hourOfDay + ":" + minute);
         mHours = hourOfDay;
         mMinutes = minute;
+        Log.i("SPY_CAM", "  TIME : " + hourOfDay + "-" + minute);
         timeSet = true;
     }
 }

@@ -1,20 +1,27 @@
 package com.byteshaft.wrecspycam;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class Helpers {
 
+    AlarmManager mAlarmManager;
     final private String ALARM_STATE = "Alarm_State";
+    PendingIntent mPIntent;
 
     void writeDataToFile(byte[] data) {
         String absoluteFileLocation = getAbsoluteFilePath(".jpg");
@@ -58,6 +65,32 @@ public class Helpers {
     boolean getAlarmState(Context context) {
         SharedPreferences preferences = getPreferenceManager(context);
         return preferences.getBoolean(ALARM_STATE, false);
+    }
+
+    void setAlarmForVideoRecording(Context context , int date, int month,
+                                           int year , int hour , int minutes) {
+        mAlarmManager = getAlarmManager(context);
+        Intent intent = new Intent("com.byteShaft.videoRecordingAlarm");
+        mPIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
+        Calendar timeOff = Calendar.getInstance();
+        timeOff.set(Calendar.DATE,date);  //1-31
+        timeOff.set(Calendar.MONTH,month);  //first month is 0!!! January is zero!!!
+        timeOff.set(Calendar.YEAR,year);//year...
+
+        timeOff.set(Calendar.HOUR_OF_DAY, hour);  //HOUR
+        timeOff.set(Calendar.MINUTE, minutes);       //MIN
+        mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                timeOff.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mPIntent);
+        Log.i("Video_Alarm,", "setting alarm of :" + timeOff.getTime());
+    }
+
+    private AlarmManager getAlarmManager(Context context) {
+        return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    }
+
+    void removeVideoRecordingAlarams() {
+        Log.i("NAMAZ_TIME", "removing");
+        mAlarmManager.cancel(mPIntent);
     }
 
 }
