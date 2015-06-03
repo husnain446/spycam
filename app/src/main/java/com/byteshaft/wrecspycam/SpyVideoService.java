@@ -101,5 +101,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     }
 
     @Override
-    public void onCameraBusy() {   }
+    public void onCameraBusy() {
+
+    }
 }

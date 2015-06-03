@@ -70,9 +70,9 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
         mHelpers = new Helpers();
         alarmState = mHelpers.getAlarmState(getActivity());
         if (alarmState) {
-            mButtonSetAlarm.setBackgroundResource(R.drawable.alarm_set);
+            mButtonSetAlarm.setBackgroundResource(R.drawable.alarmisset);
         } else {
-            mButtonSetAlarm.setBackgroundResource(R.drawable.alarmoff);
+            mButtonSetAlarm.setBackgroundResource(R.drawable.alarmisoff);
         }
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -122,15 +122,15 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
     private void getTimeDateAndSave() {
         alarmState = mHelpers.getAlarmState(getActivity());
         if (timeSet && dateSet && !alarmState) {
-           //saving true value for alarmState when both time and date is set
+            //saving true value for alarmState when both time and date is set
             mHelpers.saveAlarmState(true, getActivity());
-            mButtonSetAlarm.setBackgroundResource(R.drawable.alarm_set);
+            mButtonSetAlarm.setBackgroundResource(R.drawable.alarmisset);
             mHelpers.setAlarmForVideoRecording(getActivity(), mDay, mMonth, mYear, mHours, mMinutes);
         } else if (!timeSet && !dateSet && !alarmState) {
             Toast.makeText(getActivity() , "Please select time & date first" , Toast.LENGTH_SHORT).show();
         } else {
             mHelpers.saveAlarmState(false, getActivity());
-            mButtonSetAlarm.setBackgroundResource(R.drawable.alarmoff);
+            mButtonSetAlarm.setBackgroundResource(R.drawable.alarmisoff);
             mHelpers.removeVideoRecordingAlarams();
             Intent intent = new Intent(getActivity(), SpyVideoService.class);
             getActivity().stopService(intent);
