@@ -29,7 +29,7 @@ public class SpyPictureService extends Service implements CameraStateChangeListe
     public int onStartCommand(Intent intent, int flags, int startId) {
         mBurstValue = intent.getIntExtra("burstValue" , 1);
         Log.i(LOG_TAG , String.format("Brust value %d" , mBurstValue));
-        mHelpers = new Helpers(this);
+        mHelpers = new Helpers(getApplicationContext());
         mFlashlight = new Flashlight(getApplicationContext());
         mFlashlight.setCameraStateChangedListener(this);
         mFlashlight.setupCameraPreview();
