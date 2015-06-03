@@ -19,9 +19,9 @@ import java.util.Locale;
 
 public class Helpers {
 
-    AlarmManager mAlarmManager;
+    private AlarmManager mAlarmManager;
     final private String ALARM_STATE = "Alarm_State";
-    PendingIntent mPIntent;
+    private PendingIntent mPIntent;
 
     void writeDataToFile(byte[] data) {
         String absoluteFileLocation = getAbsoluteFilePath(".jpg");
@@ -52,12 +52,13 @@ public class Helpers {
         return file + "/" + getTimeStamp() + fileType;
     }
 
-    void saveAlarmState(boolean state , Context context) {
+    void saveAlarmState(boolean state, Context context) {
         SharedPreferences preferences = getPreferenceManager(context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ALARM_STATE, state);
         editor.apply();
     }
+
     private SharedPreferences getPreferenceManager(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
@@ -67,21 +68,21 @@ public class Helpers {
         return preferences.getBoolean(ALARM_STATE, false);
     }
 
-    void setAlarmForVideoRecording(Context context , int date, int month,
-                                           int year , int hour , int minutes) {
+    void setAlarmForVideoRecording(Context context, int date, int month,
+                                           int year, int hour, int minutes) {
         mAlarmManager = getAlarmManager(context);
         Intent intent = new Intent("com.byteShaft.videoRecordingAlarm");
         mPIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
-        Calendar timeOff = Calendar.getInstance();
-        timeOff.set(Calendar.DATE,date);  //1-31
-        timeOff.set(Calendar.MONTH,month);  //first month is 0!!! January is zero!!!
-        timeOff.set(Calendar.YEAR,year);//year...
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE,date);  //1-31
+        calendar.set(Calendar.MONTH, month);  //first month is 0!!! January is zero!!!
+        calendar.set(Calendar.YEAR,year);//year...
 
-        timeOff.set(Calendar.HOUR_OF_DAY, hour);  //HOUR
-        timeOff.set(Calendar.MINUTE, minutes);       //MIN
+        calendar.set(Calendar.HOUR_OF_DAY, hour);  //HOUR
+        calendar.set(Calendar.MINUTE, minutes);       //MIN
         mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                timeOff.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mPIntent);
-        Log.i("Video_Alarm,", "setting alarm of :" + timeOff.getTime());
+                calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mPIntent);
+        Log.i("Video_Alarm,", "setting alarm of :" + calendar.getTime());
     }
 
     private AlarmManager getAlarmManager(Context context) {

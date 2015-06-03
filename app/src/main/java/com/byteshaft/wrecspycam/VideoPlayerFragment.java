@@ -1,6 +1,5 @@
 package com.byteshaft.wrecspycam;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,8 +25,8 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
     private Button dateButton;
     private Button timeButton;
     private Button mButtonSetAlarm;
-    public static final String DATEPICKER_TAG = "datepicker";
-    public static final String TIMEPICKER_TAG = "timepicker";
+    static final String DATEPICKER_TAG = "datepicker";
+    static final String TIMEPICKER_TAG = "timepicker";
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private TextView mTextViewDate;
@@ -39,14 +38,13 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
     private int mDay;
     private int mHours;
     private int mMinutes;
-    Helpers mHelpers;
+    private Helpers mHelpers;
     private boolean alarmState;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.video_recorder, container, false);
-        this.mView = view;
+        mView = view;
         initialize(savedInstanceState);
         return view;
     }

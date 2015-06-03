@@ -19,12 +19,10 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
     private MediaRecorder mMediaRecorder;
     private Flashlight mFlashlight;
     private Helpers mHelpers;
-    int mVideoDelay;
     private long delayInMilliSeconds;
     private String LOG_TAG = "SPY_CAM";
-    static boolean videoServiceRunning = false;
+    public static boolean videoServiceRunning = false;
     private boolean serviceStopped = false;
-
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -33,7 +31,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mVideoDelay = intent.getIntExtra("video_delay", 1);
+        int mVideoDelay = intent.getIntExtra("video_delay", 1);
         delayInMilliSeconds = TimeUnit.MINUTES.toMillis(mVideoDelay);
         mMediaRecorder = new MediaRecorder();
         mHelpers = new Helpers();
@@ -68,9 +66,8 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
         }
-        System.out.println("Service stop" +serviceStopped);
+
         if (!serviceStopped) {
-            System.out.println(!serviceStopped);
             new android.os.Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -88,16 +85,13 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         }
         mFlashlight.releaseAllResources();
         videoServiceRunning = false;
-        Log.i(LOG_TAG, "finish");
+        Log.i(LOG_TAG, "Recording Stop");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         stopVideoRecording();
-        System.out.println("serviceDestroyed");
-        System.out.println(serviceStopped);
-
     }
 
     @Override

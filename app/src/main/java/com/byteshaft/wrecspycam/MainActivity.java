@@ -16,9 +16,10 @@ import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
 
 public class MainActivity extends ActionBarActivity implements MaterialTabListener {
-    private ViewPager pager;
-    private MaterialTabHost tabHost;
-    private Resources res;
+
+    private ViewPager mPager;
+    private MaterialTabHost mTabHost;
+    private Resources mResources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +27,22 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1E90FF")));
         setContentView(R.layout.activity_main);
-        res = this.getResources();
-        tabHost = (MaterialTabHost) this.findViewById(R.id.tabHost);
-        pager = (ViewPager) this.findViewById(R.id.pager);
+        mResources = getResources();
+        mTabHost = (MaterialTabHost) findViewById(R.id.tab_host);
+        mPager = (ViewPager) findViewById(R.id.pager);
         ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(pagerAdapter);
-        pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mPager.setAdapter(pagerAdapter);
+        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 // swipe to change tab
-                tabHost.setSelectedNavigationItem(position);
+                mTabHost.setSelectedNavigationItem(position);
             }
         });
 
         for (int i = 0; i < pagerAdapter.getCount(); i++) {
-            tabHost.addTab(
-                    tabHost.newTab()
+            mTabHost.addTab(
+                    mTabHost.newTab()
                             .setIcon(getIcon(i))
                             .setTabListener(this)
             );
@@ -50,7 +51,7 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
 
     @Override
     public void onTabSelected(MaterialTab tab) {
-        pager.setCurrentItem(tab.getPosition());
+        mPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
@@ -63,12 +64,14 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
 
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         public Fragment getItem(int num) {
             Fragment result = new Fragment();
+
             switch (num) {
                 case 0:
                     result = new VideoPlayerFragment();
@@ -78,6 +81,7 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
                     break;
                 case 2:
                     result = new ImagesFragment();
+                    break;
             }
             return result;
         }
@@ -102,16 +106,16 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
         }
     }
 
-
     private Drawable getIcon(int position) {
         switch (position) {
             case 0:
-                return res.getDrawable(R.drawable.video_recorder);
+                return mResources.getDrawable(R.drawable.video_recorder);
             case 1:
-                return res.getDrawable(R.drawable.sound_recorder);
+                return mResources.getDrawable(R.drawable.sound_recorder);
             case 2:
-                return res.getDrawable(R.drawable.images);
+                return mResources.getDrawable(R.drawable.images);
+            default:
+                return null;
         }
-        return null;
     }
 }

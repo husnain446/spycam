@@ -12,8 +12,7 @@ public class SpyVoiceRecordingService extends Service {
 
     private MediaRecorder mRecorder;
     private Helpers mHelpers;
-    private final int  ONE_HOUR = 1000*60*60;
-
+    private final int ONE_HOUR = 1000*60*60;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -55,5 +54,4 @@ public class SpyVoiceRecordingService extends Service {
         stopSelf();
         Log.i("SPY_CAM","Stop Recording");
     }
-
 }

@@ -5,7 +5,7 @@
 
 
     <it.neokree.materialtabs.MaterialTabHost
-        android:id="@+id/tabHost"
+        android:id="@+id/tab_host"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         app:primaryColor="#1E90FF"
