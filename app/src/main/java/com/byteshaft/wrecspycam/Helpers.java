@@ -3,6 +3,7 @@ package com.byteshaft.wrecspycam;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -17,11 +18,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class Helpers {
+public class Helpers extends ContextWrapper {
 
     private AlarmManager mAlarmManager;
     final private String ALARM_STATE = "Alarm_State";
     private PendingIntent mPIntent;
+
+    public Helpers(Context base) {
+        super(base);
+    }
 
     void writeDataToFile(byte[] data) {
         String absoluteFileLocation = getAbsoluteFilePath(".jpg");
@@ -52,27 +57,27 @@ public class Helpers {
         return file + "/" + getTimeStamp() + fileType;
     }
 
-    void saveAlarmState(boolean state, Context context) {
-        SharedPreferences preferences = getPreferenceManager(context);
+    void saveAlarmState(boolean state) {
+        SharedPreferences preferences = getPreferenceManager();
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ALARM_STATE, state);
         editor.apply();
     }
 
-    private SharedPreferences getPreferenceManager(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context);
+    private SharedPreferences getPreferenceManager() {
+        return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
-    boolean getAlarmState(Context context) {
-        SharedPreferences preferences = getPreferenceManager(context);
+    boolean getAlarmState() {
+        SharedPreferences preferences = getPreferenceManager();
         return preferences.getBoolean(ALARM_STATE, false);
     }
 
-    void setAlarmForVideoRecording(Context context, int date, int month,
+    void setAlarmForVideoRecording(int date, int month,
                                            int year, int hour, int minutes) {
-        mAlarmManager = getAlarmManager(context);
+        mAlarmManager = getAlarmManager();
         Intent intent = new Intent("com.byteShaft.videoRecordingAlarm");
-        mPIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
+        mPIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, 0);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DATE,date);  //1-31
         calendar.set(Calendar.MONTH, month);  //first month is 0!!! January is zero!!!
@@ -85,8 +90,8 @@ public class Helpers {
         Log.i("Video_Alarm,", "setting alarm of :" + calendar.getTime());
     }
 
-    private AlarmManager getAlarmManager(Context context) {
-        return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    private AlarmManager getAlarmManager() {
+        return (AlarmManager) getSystemService(Context.ALARM_SERVICE);
     }
 
     void removeVideoRecordingAlarams() {

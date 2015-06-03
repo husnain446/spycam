@@ -18,7 +18,8 @@ import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
 
-public class VideoPlayerFragment extends Fragment implements Button.OnClickListener , OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class VideoPlayerFragment extends Fragment implements Button.OnClickListener ,
+        OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private View mView;
     private Button mButton;
@@ -65,24 +66,28 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
         timeButton.setOnClickListener(this);
         mButtonSetAlarm.setOnClickListener(this);
         mButton.setOnClickListener(this);
-        mHelpers = new Helpers();
-        alarmState = mHelpers.getAlarmState(getActivity());
+        mHelpers = new Helpers(getActivity());
+        alarmState = mHelpers.getAlarmState();
         if (alarmState) {
             mButtonSetAlarm.setBackgroundResource(R.drawable.alarmisset);
         } else {
             mButtonSetAlarm.setBackgroundResource(R.drawable.alarmisoff);
         }
         final Calendar calendar = Calendar.getInstance();
-        datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
+        datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY)
+                ,calendar.get(Calendar.MINUTE), false, false);
 
         if (savedInstanceState != null) {
-            DatePickerDialog dpd = (DatePickerDialog) getFragmentManager().findFragmentByTag(DATEPICKER_TAG);
+            DatePickerDialog dpd = (DatePickerDialog)
+                    getFragmentManager().findFragmentByTag(DATEPICKER_TAG);
             if (dpd != null) {
                 dpd.setOnDateSetListener(this);
             }
 
-            TimePickerDialog tpd = (TimePickerDialog) getFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
+            TimePickerDialog tpd = (TimePickerDialog)
+                    getFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
             if (tpd != null) {
                 tpd.setOnTimeSetListener(this);
             }
@@ -118,16 +123,16 @@ public class VideoPlayerFragment extends Fragment implements Button.OnClickListe
     }
 
     private void getTimeDateAndSave() {
-        alarmState = mHelpers.getAlarmState(getActivity());
+        alarmState = mHelpers.getAlarmState();
         if (timeSet && dateSet && !alarmState) {
             //saving true value for alarmState when both time and date is set
-            mHelpers.saveAlarmState(true, getActivity());
+            mHelpers.saveAlarmState(true);
             mButtonSetAlarm.setBackgroundResource(R.drawable.alarmisset);
-            mHelpers.setAlarmForVideoRecording(getActivity(), mDay, mMonth, mYear, mHours, mMinutes);
+            mHelpers.setAlarmForVideoRecording(mDay, mMonth, mYear, mHours, mMinutes);
         } else if (!timeSet && !dateSet && !alarmState) {
             Toast.makeText(getActivity() , "Please select time & date first" , Toast.LENGTH_SHORT).show();
         } else {
-            mHelpers.saveAlarmState(false, getActivity());
+            mHelpers.saveAlarmState(false);
             mButtonSetAlarm.setBackgroundResource(R.drawable.alarmisoff);
             mHelpers.removeVideoRecordingAlarams();
             Intent intent = new Intent(getActivity(), SpyVideoService.class);

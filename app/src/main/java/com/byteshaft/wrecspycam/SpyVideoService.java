@@ -34,7 +34,7 @@ public class SpyVideoService extends Service implements CameraStateChangeListene
         int mVideoDelay = intent.getIntExtra("video_delay", 1);
         delayInMilliSeconds = TimeUnit.MINUTES.toMillis(mVideoDelay);
         mMediaRecorder = new MediaRecorder();
-        mHelpers = new Helpers();
+        mHelpers = new Helpers(this);
         mFlashlight = new Flashlight(getApplicationContext());
         mFlashlight.setCameraStateChangedListener(this);
         mFlashlight.setupCameraPreview();

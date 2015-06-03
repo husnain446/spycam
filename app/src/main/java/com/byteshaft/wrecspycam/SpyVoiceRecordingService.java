@@ -16,7 +16,7 @@ public class SpyVoiceRecordingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mHelpers = new Helpers();
+        mHelpers = new Helpers(this);
         mRecorder = new MediaRecorder();
         mRecorder.reset();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
