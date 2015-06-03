@@ -95,7 +95,7 @@ public class Helpers extends ContextWrapper {
     }
 
     void removeVideoRecordingAlarams() {
-        Log.i("NAMAZ_TIME", "removing");
+        Log.i("SPY_CAM", "removing scheduled Alarm");
         mAlarmManager.cancel(mPIntent);
     }
 
